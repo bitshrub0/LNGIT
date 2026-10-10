@@ -20,7 +20,7 @@ addLayer("s", {
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
         let exp = new Decimal(1)
-        if (hasUpgrade('s', 23)) exp = exp.times(3.1415926536)
+        if (hasUpgrade('s', 23) && !hasUpgrade('s', 61)) exp = exp.times(3.1415926536)
             return exp
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
@@ -64,7 +64,7 @@ addLayer("s", {
         15: {
             unlocked() { return hasUpgrade("s", 14) },
             title: "Reap what thou sow'st",
-            description: "Inflation Time - shrubs boost seed gain!",
+            description: "Inflation Time - shrubs boost shrub and seed gain!",
             tooltip() { 
             return "log4(shrubs+1)+1"
             },
@@ -126,5 +126,17 @@ addLayer("s", {
             description: "^5.555 to seed gain",
             cost: new Decimal(1e20),
         },
+        52: {
+            unlocked() { return hasUpgrade("s", 51) },
+            title: "Prepare for Big Numbers",
+            description: "???",
+            cost: new Decimal(1e97),
+        },
+        61: {
+            unlocked() { return hasUpgrade("s", 52) },
+            title: "This bit is boring now",
+            description: "Seed gain x1e44, shrub gain nerf but unlock Rain!",
+            cost: new Decimal(1e99),
+        }
     },
 })

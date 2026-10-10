@@ -12,7 +12,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.01",
+	num: "0.011",
 	name: "Something!",
 }
 
@@ -56,6 +56,7 @@ function getPointGen() {
 	if (hasUpgrade('s', 22)) gain = gain.times(96)
 	if (hasUpgrade('s', 41)) gain = gain.times(616)
 	if (hasUpgrade('s', 51)) gain = gain.pow(5.555)
+	if (hasUpgrade('s', 61)) gain = gain.times(1e44)
 	return gain
 }
 
@@ -65,12 +66,12 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
-	"Current Endgame: 5.7e57 seeds!"
+	"Current Endgame: 1e111 seeds!"
 ]
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.points.gte(new Decimal("5.7e57"))
+	return player.points.gte(new Decimal("1e111"))
 }
 
 
