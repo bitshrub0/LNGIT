@@ -25,7 +25,7 @@ addLayer("s", {
         let exp = new Decimal(1)
         if (hasUpgrade('s', 23) && !hasUpgrade('s', 61)) exp = exp.times(3.1415926536)
         if (hasMilestone('e', 2)) exp = exp.times(2)
-        if (hasUpgrade('s', 71)) exp = exp.pow(1.1)
+        if (hasUpgrade('s', 71)) exp = exp.tetrate(1.1)
             return exp
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
@@ -153,19 +153,19 @@ addLayer("s", {
             unlocked() { return hasUpgrade('s', 71) },
             title: "Seednami",
             description: "xe11.111111... to shrub gain",
-            cost: new Decimal(3e126),
+            cost: new Decimal(3e135),
         },
         73: {
             unlocked() { return hasUpgrade('s', 72) },
             title: "Meiji Wanderer",
             description: "x1603 to seed gain, x1858 to shrub gain",
-            cost: new Decimal(2e151),
+            cost: new Decimal(2e160),
         },
         74: {
             unlocked() { return hasUpgrade('s', 73) },
             title: "Muffins! [1/6]",
             description: "Hint? Also x1e25 seeds",
-            cost: new Decimal(1e162),
+            cost: new Decimal(1e171),
         },
         81: {
             unlocked() { return hasMilestone('e', 5) },
