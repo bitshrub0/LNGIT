@@ -226,7 +226,7 @@ addLayer("e", {
     ],
     layerShown(){
         let earthShow = false
-        if (hasUpgrade('s', 61)) earthShow = true
+        if (hasUpgrade('s', 61) || player[this.layer].unlocked) earthShow = true
         return earthShow
     },
     milestones: {
@@ -336,7 +336,7 @@ addLayer("f", {
     ],
     layerShown(){
         let fruitShow = false
-        if (hasUpgrade('s', 82)) fruitShow = true
+        if (hasUpgrade('s', 82) || player[this.layer].unlocked) fruitShow = true
         return fruitShow
     },
     gainMult() {
