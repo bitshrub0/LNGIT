@@ -188,7 +188,7 @@ addLayer("e", {
     position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     branches: ["s"], // layer branches
     startData() { return {
-        unlocked: true,
+        unlocked: false,
 		points: new Decimal(0),
     }},
     color: "#88413e",
@@ -224,9 +224,6 @@ addLayer("e", {
     hotkeys: [
         {key: "e", description: "E: Reset for soil", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    unlockWhen() {
-        return player.points.gte(1e100) || player[this.layer].unlocked
-    },
     layerShown(){
         let earthShow = false
         if (hasUpgrade('s', 61) || player[this.layer].unlocked) earthShow = true
@@ -323,7 +320,7 @@ addLayer("f", {
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     branches: ['s', 'e'],
     startData() { return {
-        unlocked: true,
+        unlocked: false,
 		points: new Decimal(0),
     }},
     color: "#ff380b",
@@ -337,9 +334,6 @@ addLayer("f", {
     hotkeys: [
         {key: "f", description: "F: Reset for fruits", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    unlockWhen() {
-        return player.s.points.gte(1e200) || player[this.layer].unlocked
-    },
     layerShown(){
         let fruitShow = false
         if (hasUpgrade('s', 82) || player[this.layer].unlocked) fruitShow = true
