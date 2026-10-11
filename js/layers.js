@@ -141,7 +141,7 @@ addLayer("s", {
             unlocked() { return hasUpgrade("s", 52) },
             title: "This bit is boring now",
             description: "Seed gain x1e44 but nerf shrub gain. Also: unlock Earth!",
-            cost: new Decimal(1e99),
+            cost: new Decimal(1.5e97),
         },
         71: {
             unlocked() { return hasMilestone('e', 2) },
@@ -294,19 +294,19 @@ addLayer("e", {
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
         },
         21: {
-            unlocked() { return hasMilestone('e', 3) },
+            unlocked() { return hasMilestone('e', 4) },
             title: "Respiration",
             description: "x1000 to seed gain",
             cost: new Decimal(25000),
         },
         22: {
-            unlocked() { return hasUpgrade('s', 21) },
+            unlocked() { return hasUpgrade('e', 21) },
             title: "Dust in the wind",
             description: "x109 to shrub gain",
             cost: new Decimal(109000),
         },
         23: {
-            unlocked() { return hasUpgrade('s', 22) },
+            unlocked() { return hasUpgrade('e', 22) },
             title: "Earth",
             description: "x8 billion to soil gain",
             cost: new Decimal(8e18),
@@ -344,7 +344,7 @@ addLayer("f", {
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
-        let exp = new Decimal(1)
+        let exp = new Decimal(0.01)
         return exp
     },
 })

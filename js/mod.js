@@ -80,9 +80,8 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.f.points.gte(new Decimal(1))
+	return player.f.points.gte(1)
 }
-
 
 
 // Less important things beyond this point!
