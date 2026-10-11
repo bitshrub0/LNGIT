@@ -5,21 +5,22 @@ let modInfo = {
 	modFiles: ["layers.js", "tree.js"],
 
 	discordName: "Bitshrub Random Chaos",
-	discordLink: "https://discord.gg/PjUNcPMh2v",
+	discordLink: "https://discord.gg/9RJK9NpGEY",
 	initialStartPoints: new Decimal (0), // Used for hard resets and new players
 	offlineLimit: 72,  // In hours
 }
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.03",
-	name: "Something!",
+	num: "0.1",
+	name: "Soil & Fruit",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-    v0.01<br>
-	    - Fixed points/seeds confusion<br>
-		- Discord link works now<br>
+	<h3>v0.1</h3><br>
+		- Added Soil.<br>
+		- Debugged various errors.<br>
+		- Added the beginning of Fruit...<br>
 	<h3>v0.00</h3><br>
 		- Added shrubs.<br>
 		- Added shrub upgrades.`
@@ -74,12 +75,12 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
-	"Current Endgame: 1.34e154 seeds!"
+	"Current Endgame: 1 fruit!"
 ]
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.points.gte(new Decimal(1.34078e154))
+	return player.f.points.gte(new Decimal(1))
 }
 
 
