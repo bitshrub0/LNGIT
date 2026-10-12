@@ -25,7 +25,7 @@ addLayer("s", {
         let exp = new Decimal(1)
         if (hasUpgrade('s', 23) && !hasUpgrade('s', 61)) exp = exp.times(3.1415926536)
         if (hasMilestone('e', 2)) exp = exp.times(2)
-        if (hasUpgrade('s', 71)) exp = exp.tetrate(1.1)
+        if (hasUpgrade('s', 71)) exp = exp.pow(1.1)
             return exp
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
@@ -146,7 +146,7 @@ addLayer("s", {
         71: {
             unlocked() { return hasMilestone('e', 2) },
             title: "Shrubs II",
-            description: "Oh god... shrub gain *^^1.1*",
+            description: "Oh god... shrub gain ^1.1",
             cost: new Decimal(5e118),
         },
         72: {
@@ -344,7 +344,32 @@ addLayer("f", {
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
-        let exp = new Decimal(0.01)
+        let exp = new Decimal(0.0105)
         return exp
+    },
+    upgrades: {
+        11: {
+            title: "Yay!!",
+            description: "fruit boosts seeds MASSIVELY!",
+            cost: new Decimal(1),
+            effect() {
+                let feleven = new Decimal(2.5)
+                let one = new Decimal(1)
+                return feleven.sub(player[this.layer].points.pow(-1))
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect
+        },
+        12: {
+            unlocked() {return hasUpgrade('f', 11)},
+            title: "TimeWallTime?",
+            description: "Unlock Bonus Games!",
+            cost: new Decimal(0),
+        },
+        13: {
+            unlocked() {return hasUpgrade('f', 12)},
+            title: "Apples",
+            description: "Here we go... ^^1.0001 to seed gain!",
+            cost: new Decimal(10),
+        },
     },
 })

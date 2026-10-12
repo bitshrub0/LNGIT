@@ -2,7 +2,7 @@ let modInfo = {
 	name: "The Shrub Tree",
 	author: "Bitshrub0",
 	pointsName: "seeds",
-	modFiles: ["layers.js", "tree.js"],
+	modFiles: ["layers.js", "tree.js", "minigames.js"],
 
 	discordName: "Bitshrub Random Chaos",
 	discordLink: "https://discord.gg/9RJK9NpGEY",
@@ -66,6 +66,8 @@ function getPointGen() {
 	if (hasUpgrade('e', 21)) gain = gain.times(1000)
 	if (hasUpgrade('s', 81)) gain = gain.times(2)
 	if (hasUpgrade('s', 82)) gain = gain.times(2500)
+	if (hasUpgrade('f', 11)) gain = gain.pow(upgradeEffect('f', 11))
+	if (hasUpgrade('f', 13)) gain = gain.tetrate(1.0001)
 	return gain
 }
 
@@ -75,12 +77,12 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
-	"Current Endgame: 1 fruit!"
+	"Current Endgame: 100 fruit!"
 ]
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.f.points.gte(1)
+	return player.f.points.gte(100)
 }
 
 
