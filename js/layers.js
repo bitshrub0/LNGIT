@@ -371,5 +371,44 @@ addLayer("f", {
             description: "Here we go... ^^1.0001 to seed gain!",
             cost: new Decimal(10),
         },
+        14: {
+            unlocked() {return hasUpgrade('f', 13)},
+            title: "Orange",
+            description: "x1e50 to seed gain!!",
+            cost: new Decimal(80),
+        },
+        15: {
+            unlocked() {return hasUpgrade('f', 14)},
+            title: "Science Time!",
+            description: "Unlock the Science layer and do Stuff",
+            cost: new Decimal(170),
+        },
     },
+})
+
+addLayer("sci", {
+    name: "Science", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "Δ", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: -1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    branches: ['f'],
+    startData() { return {
+        unlocked: false,
+		points: new Decimal(0),
+    }},
+    color: "#7f05cb",
+    requires: new Decimal(308), // Can be a function that takes requirement increases into account
+    resource: "Science", // Name of prestige currency
+    baseResource: "fruit", // Name of resource prestige is based on
+    baseAmount() {return player.f.points}, // Get the current amount of baseResource
+    type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 2, // Prestige currency exponent
+    row: 1, // Row the layer is in on the tree (0 is the first row)
+    hotkeys: [
+        {key: "D", description: "D: Reset for Science", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+    ],
+        layerShown(){
+        let sciShow = false
+        if (hasUpgrade('f', 15) || player[this.layer].unlocked) sciShow = true
+        return sciShow
+        },
 })

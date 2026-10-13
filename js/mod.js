@@ -12,8 +12,8 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.12",
-	name: "Soil & Fruit",
+	num: "0.2",
+	name: "Science",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
@@ -22,8 +22,7 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Debugged various errors.<br>
 		- Added the beginning of Fruit...<br>
 	<h3>v0.00</h3><br>
-		- Added shrubs.<br>
-		- Added shrub upgrades.`
+		- Added shrubs.`
 
 let winText = `Well. That wasn't very hard... For now, at least. More soon!`
 
@@ -68,6 +67,7 @@ function getPointGen() {
 	if (hasUpgrade('s', 82)) gain = gain.times(2500)
 	if (hasUpgrade('f', 11)) gain = gain.pow(upgradeEffect('f', 11))
 	if (hasUpgrade('f', 13)) gain = gain.tetrate(1.0001)
+	if (hasUpgrade('f', 14)) gain = gain.times(1e50)
 	return gain
 }
 
@@ -77,12 +77,12 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
-	"Current Endgame: 100 fruit!"
+	"Current Endgame: 100 Science!"
 ]
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.f.points.gte(100)
+	return player.sci.points.gte(100)
 }
 
 
