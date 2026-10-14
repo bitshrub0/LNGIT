@@ -12,11 +12,18 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.2",
-	name: "Science",
+	num: "0.3",
+	name: "The Sixth Science Milestone is Coming",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h3>v0.3</h3><br>
+		- Finished Fruit.<br>
+		- Added Science Milestones 1-6.<br>
+		- Something coming soon... very soon.<br>
+	<h3>v0.2</h3><br>
+		- Added more Fruit.<br>
+		- Added Science...<br>
 	<h3>v0.1</h3><br>
 		- Added Soil.<br>
 		- Debugged various errors.<br>
@@ -58,6 +65,7 @@ function getPointGen() {
 	if (hasUpgrade('s', 51)) gain = gain.pow(5.555)
 	if (hasUpgrade('s', 61)) gain = gain.times(1e44)
 	if (hasMilestone('e', 1)) gain = gain.pow(1.1)
+	if (hasUpgrade('f', 12)) gain = gain.times(10)
 	if (hasUpgrade('s', 73)) gain = gain.times(1858)
 	if (hasUpgrade('s', 74)) gain = gain.times(1e25)
 	if (hasUpgrade('e', 13)) gain = gain.add(1)
@@ -68,6 +76,7 @@ function getPointGen() {
 	if (hasUpgrade('f', 11)) gain = gain.pow(upgradeEffect('f', 11))
 	if (hasUpgrade('f', 13)) gain = gain.tetrate(1.0001)
 	if (hasUpgrade('f', 14)) gain = gain.times(1e50)
+	if (hasUpgrade('f', 24)) gain = gain.times(1e9)
 	return gain
 }
 
@@ -77,12 +86,12 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
-	"Current Endgame: 100 Science!"
+	"Current Endgame: 1e500 seeds!"
 ]
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.sci.points.gte(100)
+	return player.points.gte(1e500)
 }
 
 

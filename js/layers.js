@@ -6,6 +6,7 @@ addLayer("s", {
         unlocked: true,
 		points: new Decimal(0),
     }},
+    autoUpgrade() {return hasMilestone('sci', 2)},
     color: "#53ff1a",
     requires: new Decimal(8), // Can be a function that takes requirement increases into account
     resource: "shrubs", // Name of prestige currency
@@ -27,6 +28,11 @@ addLayer("s", {
         if (hasMilestone('e', 2)) exp = exp.times(2)
         if (hasUpgrade('s', 71)) exp = exp.pow(1.1)
             return exp
+    },
+    passiveGeneration() {
+        let sgen = new Decimal(0)
+        if (hasUpgrade('s', 22)) sgen = 0.001
+        return sgen
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
@@ -144,7 +150,7 @@ addLayer("s", {
             cost: new Decimal(1.5e97),
         },
         71: {
-            unlocked() { return hasMilestone('e', 2) },
+            unlocked() { return hasMilestone('e', 2) && hasUpgrade('s', 61) },
             title: "Shrubs II",
             description: "Oh god... shrub gain ^1.1",
             cost: new Decimal(5e118),
@@ -168,7 +174,7 @@ addLayer("s", {
             cost: new Decimal(1e171),
         },
         81: {
-            unlocked() { return hasMilestone('e', 5) },
+            unlocked() { return hasMilestone('e', 5) && hasUpgrade('s', 74) },
             title: "Bits",
             description: "x2 to seed gain",
             cost: new Decimal(1e198),
@@ -218,6 +224,7 @@ addLayer("e", {
         if (hasUpgrade('e', 12)) passiveGain = passiveGain.pow(1.15)
         if (hasUpgrade('e', 12)) passiveGain = passiveGain.times(10)
         if (hasUpgrade('e', 23)) passiveGain = passiveGain.times(8e9)
+        if (hasUpgrade('f', 21)) passiveGain = passiveGain.times(1e15)
         player.e.points = player.e.points.add(passiveGain)
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
@@ -345,7 +352,16 @@ addLayer("f", {
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
         let exp = new Decimal(0.0105)
+        if (hasMilestone('sci', 4)) exp = exp.times(2)
         return exp
+    },
+    passiveGeneration() {
+        let fgen = new Decimal(0)
+        if (hasMilestone('sci', 3)) fgen = 1
+        return fgen
+    },
+    resetsNothing() {
+        return hasUpgrade('f', 23)
     },
     upgrades: {
         11: {
@@ -361,15 +377,15 @@ addLayer("f", {
         },
         12: {
             unlocked() {return hasUpgrade('f', 11)},
-            title: "TimeWallTime?",
-            description: "Unlock Bonus Games!",
+            title: "Bonus Honk?",
+            description: "x10 to seed gain before most other effects and Honk",
             cost: new Decimal(0),
         },
         13: {
             unlocked() {return hasUpgrade('f', 12)},
             title: "Apples",
             description: "Here we go... ^^1.0001 to seed gain!",
-            cost: new Decimal(10),
+            cost: new Decimal(25),
         },
         14: {
             unlocked() {return hasUpgrade('f', 13)},
@@ -383,6 +399,30 @@ addLayer("f", {
             description: "Unlock the Science layer and do Stuff",
             cost: new Decimal(170),
         },
+        21: {
+            unlocked() {return hasUpgrade('f', 15)},
+            title: "Lemon",
+            description: "x1e15 soil gain",
+            cost: new Decimal(300),
+        },
+        22: {
+            unlocked() {return hasUpgrade('f', 21)},
+            title: "Strawberry",
+            description: "Passively generate 0.1% of shrubs per second",
+            cost: new Decimal(2000),
+        },
+        23: {
+            unlocked() {return hasUpgrade('f', 22)},
+            title: "Lime",
+            description: "Unlock the Sixth Science Milestone and Fruits reset nothing...",
+            cost: new Decimal(8000),
+        },
+        24: {
+            unlocked() {return hasUpgrade('f', 23)},
+            title: "Kiwi",
+            description: "??? Coming soon. Also, x1 billion seeds.",
+            cost: new Decimal(1000000),
+        },
     },
 })
 
@@ -395,8 +435,15 @@ addLayer("sci", {
         unlocked: false,
 		points: new Decimal(0),
     }},
+    resetsNothing() {
+        return hasMilestone('sci', 0)
+    },
     color: "#7f05cb",
-    requires: new Decimal(308), // Can be a function that takes requirement increases into account
+    requires() {
+        let frequire = new Decimal(300)
+        if (hasMilestone('sci', 3)) frequire = frequire.div(3.75)
+        return frequire     
+    }, // Can be a function that takes requirement increases into account
     resource: "Science", // Name of prestige currency
     baseResource: "fruit", // Name of resource prestige is based on
     baseAmount() {return player.f.points}, // Get the current amount of baseResource
@@ -406,9 +453,46 @@ addLayer("sci", {
     hotkeys: [
         {key: "D", description: "D: Reset for Science", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-        layerShown(){
+    layerShown(){
         let sciShow = false
         if (hasUpgrade('f', 15) || player[this.layer].unlocked) sciShow = true
         return sciShow
+    },
+    passiveGeneration() {
+        let scigen = new Decimal(0)
+        if (hasMilestone('sci', 1)) scigen = 2
+        return scigen
+    },
+    milestones: {
+        0: {
+            requirementDescription: "100 Science",
+            done() { return player.sci.points.gte(100) }, // Condition to unlock
+            effectDescription: "Science resets nothing",
         },
+        1: {
+            requirementDescription: "200 Science",
+            done() { return player.sci.points.gte(200) }, // Condition to unlock
+            effectDescription: "Passively generate 200% of Science per second",
+        },
+        2: {
+            requirementDescription: "300 Science",
+            done() { return player.sci.points.gte(300) },
+            effectDescription: "Autobuy shrub upgrades",
+        },
+        3: {
+            requirementDescription: "400 Science",
+            done() { return player.sci.points.gte(400) },
+            effectDescription: "Passively generate Fruit, and reduce Science requirement - DON'T BUY FRUIT UPGRADES UNTIL YOU GET THIS!!",
+        },
+        4: {
+            requirementDescription: "5,000,000 Science",
+            done() { return player.sci.points.gte(5000000) },
+            effectDescription: "x100 Fruit",
+        },
+        5: {
+            requirementDescription: "1,000,000,000 Science",
+            done() { return player.sci.points.gte(1e9) },
+            effectDescription: "Coming soon!",
+        },
+    },
 })
