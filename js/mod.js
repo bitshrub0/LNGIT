@@ -77,6 +77,7 @@ function getPointGen() {
 	if (hasUpgrade('f', 13)) gain = gain.tetrate(1.0001)
 	if (hasUpgrade('f', 14)) gain = gain.times(1e50)
 	if (hasUpgrade('f', 24)) gain = gain.times(1e9)
+	if (hasMilestone('x', 0)) gain = gain.pow(1.3)
 	return gain
 }
 

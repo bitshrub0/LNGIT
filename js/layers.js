@@ -34,6 +34,9 @@ addLayer("s", {
         if (hasUpgrade('s', 22)) sgen = 0.001
         return sgen
     },
+    resetsNothing() {
+        return hasMilestone('x', 0)
+    },
     row: 0, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
         {key: "s", description: "S: Reset for shrubs", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
@@ -225,6 +228,7 @@ addLayer("e", {
         if (hasUpgrade('e', 12)) passiveGain = passiveGain.times(10)
         if (hasUpgrade('e', 23)) passiveGain = passiveGain.times(8e9)
         if (hasUpgrade('f', 21)) passiveGain = passiveGain.times(1e15)
+        if (hasChallenge('sci', 11)) passiveGain = passiveGain.pow(20)
         player.e.points = player.e.points.add(passiveGain)
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
@@ -418,9 +422,9 @@ addLayer("f", {
             cost: new Decimal(8000),
         },
         24: {
-            unlocked() {return hasUpgrade('f', 23)},
+            unlocked() {return hasUpgrade('f', 23) && player.x.unlocked},
             title: "Kiwi",
-            description: "??? Coming soon. Also, x1 billion seeds.",
+            description: ". Also, x1 billion seeds.",
             cost: new Decimal(1000000),
         },
     },
@@ -470,29 +474,87 @@ addLayer("sci", {
             effectDescription: "Science resets nothing",
         },
         1: {
+            unlocked() {return hasMilestone('sci', 0)},
             requirementDescription: "200 Science",
             done() { return player.sci.points.gte(200) }, // Condition to unlock
             effectDescription: "Passively generate 200% of Science per second",
         },
         2: {
+            unlocked() {return hasMilestone('sci', 1)},
             requirementDescription: "300 Science",
             done() { return player.sci.points.gte(300) },
             effectDescription: "Autobuy shrub upgrades",
         },
         3: {
+            unlocked() {return hasMilestone('sci', 1)},
             requirementDescription: "400 Science",
             done() { return player.sci.points.gte(400) },
             effectDescription: "Passively generate Fruit, and reduce Science requirement - DON'T BUY FRUIT UPGRADES UNTIL YOU GET THIS!!",
         },
         4: {
+            unlocked() {return hasMilestone('sci', 3)},
             requirementDescription: "5,000,000 Science",
             done() { return player.sci.points.gte(5000000) },
             effectDescription: "x100 Fruit",
         },
         5: {
+            unlocked() {return hasUpgrade('f', 23)},
             requirementDescription: "1,000,000,000 Science",
             done() { return player.sci.points.gte(1e9) },
-            effectDescription: "Coming soon!",
+            effectDescription: "Unlock Experiments.",
+        },
+    },
+})
+
+addLayer("x", {
+    name: "Experiments", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "X", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: -1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    branches: ['sci'],
+    startData() { return {
+        unlocked: false,
+		points: new Decimal(0),
+    }},
+    color: "#2b235b",
+    text: "#ffffff",
+    requires: new Decimal(1e9), // Can be a function that takes requirement increases into account
+    resource: "Research", // Name of prestige currency
+    baseResource: "Science", // Name of resource prestige is based on
+    baseAmount() {return player.sci.points}, // Get the current amount of baseResource
+    type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 0.5, // Prestige currency exponent
+    row: 2, // Row the layer is in on the tree (0 is the first row)
+    hotkeys: [
+        {key: "X", description: "X: Reset for Research", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+    ],
+    layerShown(){
+        let xShow = false
+        if (hasMilestone('sci', 5) || player[this.layer].unlocked) xShow = true
+        return xShow
+    },
+    milestones: {
+        0: {
+            requirementDescription: "1 Research",
+            effectDescription: "Shrubs reset nothing, ^1.3 to seed gain and unlock Experiment 01",
+            done() { return player.x.points.gte(1) },
+        },
+    },
+    challenges: {
+        11: {
+            unlocked() {return hasMilestone('x', 0)},
+            name: "Experiment 01",
+            challengeDescription: "Soil is removed",
+            goalDescription: "1e550 seeds",
+            rewardDescription: "^20 to soil gain",
+            canComplete: function() {return player.points.gte(1e500)},
+            onEnter() {
+                player.e.unlocked = false
+                player.x.reset()
+            },
+            onExit() {
+                player.e.unlocked = true
+                player.x.reset()
+            },
         },
     },
 })
