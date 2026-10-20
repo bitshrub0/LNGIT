@@ -41,6 +41,10 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = new Decimal(1)
+	if (hasUpgrade('l', 11)) gain = gain.add(1)
+	if (hasUpgrade('l', 21)) gain = gain.times(2)
+	if (hasUpgrade('l', 22)) gain = gain.times(3)
+	if (hasUpgrade('l', 23)) gain = gain.times(4)
 	return gain
 }
 
@@ -50,12 +54,12 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
-	"Current Endgame: 10 numbers"
+	"Current Endgame: 2000 numbers"
 ]
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.points.gte(10)
+	return player.points.gte(2000)
 }
 
 
