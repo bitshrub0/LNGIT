@@ -12,7 +12,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.0",
+	num: "0.01",
 	name: "The Beginning",
 }
 
@@ -45,6 +45,25 @@ function getPointGen() {
 	if (hasUpgrade('l', 21)) gain = gain.times(2)
 	if (hasUpgrade('l', 22)) gain = gain.times(3)
 	if (hasUpgrade('l', 23)) gain = gain.times(4)
+	if (hasUpgrade('l', 24)) gain = gain.times(5)
+	if (hasUpgrade('l', 25)) gain = gain.times(6)
+	if (hasUpgrade('l', 31)) gain = gain.times(7)
+	if (hasUpgrade('l', 32)) gain = gain.times(8)
+	if (hasUpgrade('l', 33)) gain = gain.times(9)
+	if (hasUpgrade('l', 34)) gain = gain.times(10)
+	if (hasUpgrade('l', 35)) gain = gain.times(11)
+	if (hasUpgrade('l', 41)) gain = gain.times(12)
+	if (hasUpgrade('l', 42)) gain = gain.times(13)
+	if (hasUpgrade('l', 43)) gain = gain.times(14)
+	if (hasUpgrade('l', 44)) gain = gain.times(15)
+	if (hasUpgrade('l', 45)) gain = gain.times(16)
+	if (hasUpgrade('l', 51)) gain = gain.times(17)
+	if (hasUpgrade('l', 52)) gain = gain.times(18)
+	if (hasUpgrade('l', 53)) gain = gain.times(19)
+	if (hasUpgrade('l', 54)) gain = gain.times(20)
+	if (hasUpgrade('l', 55)) gain = gain.times(21)
+	if (hasUpgrade('l', 12)) gain = gain.times(upgradeEffect('l', 12))
+	if (hasUpgrade('l', 13)) gain = gain.times(upgradeEffect('l', 13))
 	return gain
 }
 
@@ -54,12 +73,12 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
-	"Current Endgame: 2000 numbers"
+	"Current Endgame: 1.2345e23 numbers"
 ]
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.points.gte(2000)
+	return player.points.gte(1.2345e23)
 }
 
 

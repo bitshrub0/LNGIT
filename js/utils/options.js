@@ -15,7 +15,14 @@ function getStartOptions() {
 		oldStyle: false,
 		forceTooltips: true,
 		hideMilestonePopups: false,
+		precision: 4,
 	}
+}
+
+let notations = ['Scientific','Hyper-E']
+
+function changeNotation() {
+	player.notation = notations[(notations.indexOf(player.notation) + 1) % notations.length]
 }
 
 function toggleOpt(name) {

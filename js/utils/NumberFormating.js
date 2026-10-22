@@ -40,7 +40,24 @@ function sumValues(x) {
     return x.reduce((a, b) => Decimal.add(a, b))
 }
 
-function format(decimal, precision = 2, small) {
+function hyperEformat(decimal, precision) {
+	decimal = new Decimal(decimal)
+	let s = slog(decimal)
+	let mag = s.sub(s.floor()).pow10().pow10()
+	let m = commaFormat(mag,precision)
+	if (mag.gte(1e6)) m = commaFormat(mag,0)
+	let e = commaFormat(s.floor().sub(1),0)
+	if (s.gte(1e9)) e = formatWhole(s.floor())
+	if (decimal.layer >= 1e10) return hyperEformat(s,precision)+'#2'
+	if (decimal.layer >= 1e9) return 'E1#'+e
+	if ((decimal.layer > 0 && decimal.mag>0) || decimal.mag >= 1e10) return 'E'+m+'#'+e
+	if (decimal.mag >= 1e3) return commaFormat(decimal, 0)
+	if (decimal.mag >= 0.001) return regularFormat(decimal, precision)
+	if (decimal.mag >= 1/9e15 || decimal.sign!=0) return '1/'+hyperEformat(decimal.recip(),precision)
+	return regularFormat(decimal,precision)
+}
+
+function format(decimal, precision = 4, small) {
     small = small || modInfo.allowSmall
     decimal = new Decimal(decimal)
     if (isNaN(decimal.sign) || isNaN(decimal.layer) || isNaN(decimal.mag)) {
@@ -48,7 +65,7 @@ function format(decimal, precision = 2, small) {
         return "NaN"
     }
     if (decimal.sign < 0) return "-" + format(decimal.neg(), precision, small)
-    if (decimal.mag == Number.POSITIVE_INFINITY) return "Infinity"
+    if (decimal.mag == Number.POSITIVE_INFINITY) return "Ω"
     if (decimal.gte("eeee1000")) {
         var slog = decimal.slog()
         if (slog.gte(1e6)) return "F" + format(slog.floor())
@@ -56,7 +73,7 @@ function format(decimal, precision = 2, small) {
     }
     else if (decimal.gte("1e1000000")) return exponentialFormat(decimal, 0, false)
     else if (decimal.gte("1e10000")) return exponentialFormat(decimal, 0)
-    else if (decimal.gte(1e9)) return exponentialFormat(decimal, precision)
+    else if (decimal.gte(1e10)) return exponentialFormat(decimal, precision)
     else if (decimal.gte(1e3)) return commaFormat(decimal, 0)
     else if (decimal.gte(0.0001) || !small) return regularFormat(decimal, precision)
     else if (decimal.eq(0)) return (0).toFixed(precision)
@@ -74,8 +91,8 @@ function format(decimal, precision = 2, small) {
 
 function formatWhole(decimal) {
     decimal = new Decimal(decimal)
-    if (decimal.gte(1e9)) return format(decimal, 2)
-    if (decimal.lte(0.99) && !decimal.eq(0)) return format(decimal, 2)
+    if (decimal.gte(1e10)) return format(decimal, 4)
+    if (decimal.lte(0.99) && !decimal.eq(0)) return format(decimal, 4)
     return format(decimal, 0)
 }
 
@@ -97,7 +114,7 @@ function toPlaces(x, precision, maxAccepted) {
 }
 
 // Will also display very small numbers
-function formatSmall(x, precision=2) { 
+function formatSmall(x, precision=4) { 
     return format(x, precision, true)    
 }
 
