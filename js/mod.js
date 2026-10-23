@@ -2,7 +2,7 @@ let modInfo = {
 	name: "The LNGI Tree",
 	author: "Bitshrub0",
 	pointsName: "numbers",
-	modFiles: ["layers.js", "tree.js"],
+	modFiles: ["layers.js", "tree.js", "constants.js"],
 
 	discordName: "Bitshrub Random Chaos",
 	discordLink: "https://discord.gg/9RJK9NpGEY",
@@ -62,8 +62,12 @@ function getPointGen() {
 	if (hasUpgrade('l', 53)) gain = gain.times(19)
 	if (hasUpgrade('l', 54)) gain = gain.times(20)
 	if (hasUpgrade('l', 55)) gain = gain.times(21)
+	if (hasUpgrade('l', 15)) gain = gain.times(10)
+	if (hasUpgrade('t', 12)) gain = gain.times(upgradeEffect('t', 12))
 	if (hasUpgrade('l', 12)) gain = gain.times(upgradeEffect('l', 12))
 	if (hasUpgrade('l', 13)) gain = gain.times(upgradeEffect('l', 13))
+	if (hasUpgrade('t', 11)) gain = gain.times(upgradeEffect('t', 11))
+	if (hasUpgrade('t', 13)) gain = gain.pow(1.05)
 	return gain
 }
 
