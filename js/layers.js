@@ -189,29 +189,3 @@ addLayer("l", {
         },
     },
 })
-
-addLayer("ach", {
-    name: "Achievements", // This is optional, only used in a few places, If absent it just uses the layer id.
-    symbol: "A", // This appears on the layer's node. Default is the id with the first letter capitalized
-    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
-    startData() { return {
-        unlocked: false,
-		points: new Decimal(0),
-    }},
-    color: "#c7e711",
-    requires: new Decimal(1), // Can be a function that takes requirement increases into account
-    resource: "Achievements", // Name of prestige currency
-    row: "side", // Row the layer is in on the tree (0 is the first row)
-    achievements: {
-        rows: 1,
-        columns: 2,
-        11: {
-            name: "Hi :)",
-            tooltip: "Get 1 point. <br>Reward: A small sense of achievement.",
-            done() {player.l.points.gte(1)},
-            onComplete() {
-                addPoints('ach', 1)
-            },
-        },
-    },
-})
