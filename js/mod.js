@@ -12,11 +12,13 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.01",
-	name: "The Beginning",
+	num: "0.1",
+	name: "Treevolution",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h3>v0.1</h3><br>
+		- Added Trees.<br>
 	<h3>v0.0</h3><br>
 		- Added numbers and points.`
 
@@ -42,6 +44,7 @@ function getPointGen() {
 
 	let gain = new Decimal(1)
 	if (hasUpgrade('l', 11)) gain = gain.add(1)
+	if (hasUpgrade('t', 16)) gain = gain.add(10)
 	if (hasUpgrade('l', 21)) gain = gain.times(2)
 	if (hasUpgrade('l', 22)) gain = gain.times(3)
 	if (hasUpgrade('l', 23)) gain = gain.times(4)
@@ -68,6 +71,11 @@ function getPointGen() {
 	if (hasUpgrade('l', 13)) gain = gain.times(upgradeEffect('l', 13))
 	if (hasUpgrade('t', 11)) gain = gain.times(upgradeEffect('t', 11))
 	if (hasUpgrade('t', 13)) gain = gain.pow(1.05)
+	if (hasUpgrade('l', 61)) gain = gain.pow(1.1)
+	if (hasUpgrade('l', 62)) gain = gain.pow(1.2)
+	if (hasUpgrade('l', 63)) gain = gain.pow(1.3)
+	if (hasUpgrade('l', 64)) gain = gain.pow(1.4)
+	if (hasUpgrade('l', 65)) gain = gain.pow(1.5)
 	return gain
 }
 
@@ -77,12 +85,12 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
-	"Current Endgame: 1.2345e23 numbers"
+	"Current Endgame: Trees Milestone 3"
 ]
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.points.gte(1.2345e23)
+	return hasMilestone('t', 2)
 }
 
 

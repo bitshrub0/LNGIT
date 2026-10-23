@@ -18,6 +18,13 @@ addLayer("l", {
         if (hasUpgrade('l', 14)) mult = mult.times(upgradeEffect('l', 14))
         return mult
     },
+    passiveGeneration() {
+        let tGen = new Decimal(0)
+        if (hasMilestone('t', 0)) tGen = tGen.add(0.01)
+        if (hasMilestone('t', 1)) tGen = tGen.add(0.99)
+        return tGen 
+    },
+    autoUpgrade: true,
     row: 0, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
         {key: "q", description: "Q: Reset for points", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
@@ -188,6 +195,36 @@ addLayer("l", {
             description: "x21 to number gain.",
             cost: new Decimal(1e12),
         },
+        61: {
+            unlocked() {return hasUpgrade('t', 15)},
+            title: "XXI: But Wait, There's More! Goodness",
+            description: "^1.1 to number gain.",
+            cost: new Decimal(1e20),
+        },
+        62: {
+            unlocked() {return hasUpgrade('l', 61)},
+            title: "XXII: Yet Another Pattern, So Unimaginative",
+            description: "^1.2 to number gain.",
+            cost: new Decimal(1e22),
+        },
+        63: {
+            unlocked() {return hasUpgrade('l', 62)},
+            title: "XXIII: Does Anyone Even Care About These Titles?",
+            description: "^1.3 to number gain.",
+            cost: new Decimal(1e26),
+        },
+        64: {
+            unlocked() {return hasUpgrade('l', 63)},
+            title: "XXIV: This is Getting Out of Hand",
+            description: "^1.4 to number gain.",
+            cost: new Decimal(1e35),
+        },
+        65: {
+            unlocked() {return hasUpgrade('l', 64)},
+            title: "XXV: My God",
+            description: "^1.5 to number gain.",
+            cost: new Decimal(1e49),
+        },
     },
 })
 
@@ -216,6 +253,26 @@ addLayer("t", {
         {key: "t", description: "T: Reset for Trees", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     layerShown(){return hasUpgrade('l', 15) || player[this.layer].unlocked},
+    milestones: {
+        0: {
+            unlocked() {return hasUpgrade('t', 13)},
+            requirementDescription: "300 Trees: Spreading",
+            effectDescription: "Gain 1% of points every second.",
+            done() {return player[this.layer].points.gte(300)},
+        },
+        1: {
+            unlocked() {return hasUpgrade('l', 65) || hasMilestone(this.layer, this.id)},
+            requirementDescription: "5e17 Trees: Resistance",
+            effectDescription: "Gain 100% of points every second.",
+            done() {return player[this.layer].points.gte(5e17)},
+        },
+        2: {
+            unlocked() {return hasUpgrade('t', 16)},
+            requirementDescription: "2e18 Trees: Evolution",
+            effectDescription: "isEndgame()",
+            done() {return player[this.layer].points.gte(2e18)},
+        },
+    },
     upgrades: {
         11: {
             title: "Let's speed this up a bit.",
@@ -241,6 +298,24 @@ addLayer("t", {
             title: "Steady now",
             description: "^1.05 to number gain.",
             cost: new Decimal(100),
+        },
+        14: {
+            unlocked() {return hasMilestone("t", 0)},
+            title: "Worth The Wait",
+            description: "Autobuy rows 1-5 of point upgrades.",
+            cost: new Decimal(1000),
+        },
+        15: {
+            unlocked() {return hasUpgrade("t", 14)},
+            title: "Bonus Points",
+            description: "Unlock another row of point upgrades.",
+            cost: new Decimal(1500),
+        },
+        16: {
+            unlocked() {return hasMilestone("t", 1)},
+            title: "Chaos Theory",
+            description: "+10 to number gain BEFORE ALL OTHER EFFECTS (I apologise for making you wait this long, it worth it.).",
+            cost: new Decimal(1e18),
         },
     }
 })
