@@ -24,7 +24,7 @@ addLayer("l", {
         if (hasMilestone('t', 1)) tGen = tGen.add(0.99)
         return tGen 
     },
-    autoUpgrade: hasUpgrade('t', 12),
+    autoUpgrade() {return hasUpgrade('t', 12)},
     row: 0, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
         {key: "q", description: "Q: Reset for points", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
